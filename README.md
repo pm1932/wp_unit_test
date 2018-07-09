@@ -13,7 +13,12 @@ wp-cliを使ってプラグインのテストに必要なものをインスト�
 wp scaffold plugin-tests hogePlugin
 ```
 
-root権限でやると怒られるので、—allow-rootオプションをつける(非推奨)  
+※注意  
+root権限でwpコマンドを打つとやると怒られるので、root以外のユーザーで実行する(推奨)
+```
+sudo -u USER -i wp scaffold plugin-tests hogePlugin
+```
+または、—allow-rootオプションをつける(非推奨)
 ```
 sudo wp —allow-root scaffold plugin-tests hogePlugin
 ```
