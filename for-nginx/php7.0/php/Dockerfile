@@ -1,8 +1,6 @@
-FROM pressman/php:7-apache-mysql
+FROM primestrategy/kusanagi-php7:7.0.6-1
 
-RUN apt-get update \
-  && apt-get install -y libfreetype6-dev libjpeg62-turbo-dev libpng12-dev libmcrypt-dev git wget sudo subversion mysql-client \
-  && docker-php-ext-install pdo_mysql mysqli mbstring gd iconv mcrypt zip \
+RUN apk --update add zip git sudo subversion mysql-client \
 
 ## Installation of phpunit.
   && wget https://phar.phpunit.de/phpunit-6.3.0.phar \
@@ -12,4 +10,4 @@ RUN apt-get update \
 ## Installation of wp-cli.
   && curl https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar --output /tmp/wp-cli.phar \
   && chmod +x /tmp/wp-cli.phar \
-  && mv /tmp/wp-cli.phar /usr/local/bin/wp \
+  && mv /tmp/wp-cli.phar /usr/local/bin/wp

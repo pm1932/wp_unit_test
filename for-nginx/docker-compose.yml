@@ -1,0 +1,66 @@
+version: '2'
+
+services:
+  kusanagi-data:
+    container_name: kusanagi-data
+    image: busybox
+    environment:
+      TZ: "Asia/Tokyo"
+    restart: always
+    stdin_open: true
+    tty: true
+    volumes:
+      - /var/lib/mysql
+      - /etc/nginx/conf.d
+      - /etc/httpd/conf.d
+      - /etc/kusanagi.d
+      - /home/kusanagi
+      - /Users/no113/local/cs2_type_zero/source:/home/kusanagi/kusanagi/DocumentRoot # ソースディレクトリをマウント
+    command: /bin/sh
+
+  kusanagi-nginx:
+    container_name: kusanagi-nginx
+    build:
+      context: ./php5.6/nginx
+    image: kusanagi-nginx
+    restart: always
+    environment:
+      PROFILE: kusanagi
+      FQDN: cs2-0.pm1932.jp
+      WPLANG: ja
+      BCACHE: "off"
+      FCACHE: "off"
+      TZ: "Asia/Tokyo"
+    volumes_from:
+      - kusanagi-data
+    links:
+      - kusanagi-php:php
+    ports:
+      - "8283:80"
+
+  kusanagi-mysql:
+    container_name: kusanagi-mysql
+    image: mysql:5.7.20
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: pman7170
+      MYSQL_USER:     kusanagi-user
+      MYSQL_PASSWORD: pman7170
+      MYSQL_DATABASE: wp_db
+    volumes_from:
+      - kusanagi-data
+    ports:
+      - "8284:3306"
+
+  kusanagi-php:
+    container_name: kusanagi-php
+    build:
+      context: ./php5.6/php
+    image: kusanagi-php
+    restart: always
+    links:
+      - kusanagi-mysql:mysql
+    volumes_from:
+      - kusanagi-data
+    environment:
+      TZ: "Asia/Tokyo"
