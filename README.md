@@ -18,9 +18,9 @@ root権限でwpコマンドを打つとやると怒られるので、root以外�
 ```
 sudo -u USER -i wp scaffold plugin-tests hogePlugin
 ```
-または、—allow-rootオプションをつける(非推奨)
+または、—-allow-rootオプションをつける(非推奨)
 ```
-sudo wp —allow-root scaffold plugin-tests hogePlugin
+sudo wp —-allow-root scaffold plugin-tests hogePlugin
 ```
 
 新規プラグイン作成の際に以下コマンドでも良い  
@@ -36,13 +36,14 @@ phpunit用のテストケースを作る
 テストを行いたいプラグインの配下で以下コマンドを実施  
 ```
 ./bin/install-wp-tests.sh <db-name> <db-user> <db-pass> [db-host] [wp-version] [skip-database-creation]
+※すでにDBが作成されている場合は[skip-database-creation]をtrueにすること
 ```
 
 wp-configに記載のあるDB情報でOK
 
 ex. caitsithの場合  
 ```
-./bin/install-wp-tests.sh wp_db root pman7170 mysql 4.3.11
+./bin/install-wp-tests.sh wp_db root pman7170 mysql 4.3.11 true
 ```
 
 ## bootstrap.phpの設定を変更する
@@ -54,6 +55,12 @@ function _manually_load_plugin() {
 }
 ```
 
+## phpunit.xml.distの設定を変更する
+wp-cliのバージョンによっては初期でexcludeが設定されていることがあるので記述を消してください。
+```
+// 以下の記述を消す
+<exclude>/hoge</exclude>
+```
 ## その他
 phpunitのバージョン違いでもできるみたい  
 できなければ以下をbootstrap.phpに記述すること  

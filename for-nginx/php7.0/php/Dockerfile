@@ -1,6 +1,6 @@
 FROM primestrategy/kusanagi-php7:7.0.6-1
 
-RUN apk --update add zip git sudo subversion mysql-client \
+RUN apk --update add zip git sudo subversion mysql-client bash \
 
 ## Installation of phpunit.
   && wget https://phar.phpunit.de/phpunit-6.3.0.phar \
